@@ -13,3 +13,4 @@ services:
         value: https://frontend-topaz-nine-41.vercel.app
       - key: JWT_SECRET
         generateValue: true
+
