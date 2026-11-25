@@ -34,8 +34,8 @@ if (process.env.CLIENT_URL) {
 const isOriginAllowed = (origin) => {
   if (!origin) return true
   if (allowedOrigins.includes(origin)) return true
-  // Allow Vercel preview/production URLs for this project
-  if (/^https:\/\/frontend-[a-z0-9-]+-shaqib-khans-projects\.vercel\.app$/.test(origin)) {
+  // Allow Vercel preview/production URLs
+  if (/^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin)) {
     return true
   }
   // Allow any loopback or private network IP on any port in development
@@ -100,7 +100,7 @@ initSocketHandlers(io)
 
 const PORT = process.env.PORT || 5000
 
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
   server.listen(PORT, () => {
     console.log(`\n🚀 SyncPlay backend running on port ${PORT}`)
     console.log(`📡 WebSocket server ready`)
@@ -109,5 +109,8 @@ if (process.env.NODE_ENV !== 'test') {
   })
 }
 
-module.exports = { app, server }
+// Export Express app for Vercel services while preserving { app, server } destructuring for tests
+app.app = app
+app.server = server
+module.exports = app
 

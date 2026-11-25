@@ -1,6 +1,18 @@
 import { io } from 'socket.io-client'
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000'
+const getSocketUrl = () => {
+  if (import.meta.env.VITE_SOCKET_URL) return import.meta.env.VITE_SOCKET_URL
+  if (typeof window !== 'undefined' && window.location) {
+    const { hostname, protocol, port, origin } = window.location
+    if ((hostname === 'localhost' || hostname === '127.0.0.1') && (port === '5173' || port === '4173')) {
+      return `${protocol}//${hostname}:5000`
+    }
+    return origin
+  }
+  return 'http://localhost:5000'
+}
+
+const SOCKET_URL = getSocketUrl()
 
 let socketInstance = null
 
