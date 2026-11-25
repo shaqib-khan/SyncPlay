@@ -68,7 +68,15 @@ const limiter = rateLimit({
 })
 app.use('/api/', limiter)
 
-// Health check
+// Root & health check
+app.get('/', (req, res) => {
+  res.json({
+    status: 'ok',
+    service: 'SyncPlay Backend',
+    health: '/api/health',
+  })
+})
+
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
