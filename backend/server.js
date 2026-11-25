@@ -25,6 +25,7 @@ const allowedOrigins = [
   'http://127.0.0.1:3000',
   'http://localhost:4173',
   'http://127.0.0.1:4173',
+  'https://frontend-topaz-nine-41.vercel.app',
 ]
 if (process.env.CLIENT_URL) {
   allowedOrigins.push(process.env.CLIENT_URL)
@@ -33,6 +34,10 @@ if (process.env.CLIENT_URL) {
 const isOriginAllowed = (origin) => {
   if (!origin) return true
   if (allowedOrigins.includes(origin)) return true
+  // Allow Vercel preview/production URLs for this project
+  if (/^https:\/\/frontend-[a-z0-9-]+-shaqib-khans-projects\.vercel\.app$/.test(origin)) {
+    return true
+  }
   // Allow any loopback or private network IP on any port in development
   if (/^http:\/\/(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+)(:\d+)?$/.test(origin)) {
     return true
